@@ -13,16 +13,17 @@
             <h1>Edit Show</h1>
             <a href="/shows">Go Back</a>
         </div>
-        <input class="titleInput" type="text" name="title" id="title" placeholder="Enter Title Here" required>
-        <div class="content">
-            <input type="text" name="network" id="network" placeholder="Enter Network Here" required>
-            <input type="date" name="date" id="date" placeholder="Enter Release Date Here" required>
-        </div>
-        <textarea name="desc" id="desc" cols="56" rows="10" placeholder="Description of Show Here"></textarea>
-        <form action="">
+        <form action="/shows/{{ show.id }}/edit/update" method="POST">
+            {% csrf_token %}
+            <input class="titleInput" type="text" name="title" id="title" placeholder="Enter Title Here" required>
+            <div class="content">
+                <input type="text" name="network" id="network" placeholder="Enter Network Here" required>
+                <input type="date" name="date" id="date" placeholder="Release" required/>
+            </div>
+            <textarea name="desc" id="desc" cols="56" rows="10" placeholder="Description of Show Here"></textarea><br>
             <button class="button" type="submit">Update</button>
         </form>
-        <a href="shows/1">Go to Show</a>
+        <a href="/shows/{{ show.id }}">Go to Show</a>
     </div>
 </body>
 </html>

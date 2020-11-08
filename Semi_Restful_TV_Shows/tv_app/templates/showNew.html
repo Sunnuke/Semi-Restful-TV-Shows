@@ -13,13 +13,14 @@
             <h1>Add a New Show</h1>
             <a href="/shows">Go Back</a>
         </div>
-        <input class="titleInput" type="text" name="title" id="title" placeholder="Enter Title Here" required>
-        <div class="content">
-            <input type="text" name="network" id="network" placeholder="Enter Network Here" required>
-            <input type="date" name="date" id="date" placeholder="Enter Release Date Here" required>
-        </div>
-        <textarea name="desc" id="desc" cols="56" rows="10" placeholder="Description of Show Here"></textarea>
-        <form action="">
+        <form action="/shows/new/add" method="POST">
+            {% csrf_token %}
+            <input class="titleInput" type="text" name="title" id="title" placeholder="Enter Title Here" required>
+            <div class="content">
+                <input type="text" name="network" id="network" placeholder="Enter Network Here" required>
+                <input type="date" name="date" id="date" placeholder="Release" required/>
+            </div>
+            <textarea name="desc" id="desc" cols="56" rows="10" placeholder="Description of Show Here"></textarea>
             <button class="button" type="submit">Create</button>
         </form>
     </div>
