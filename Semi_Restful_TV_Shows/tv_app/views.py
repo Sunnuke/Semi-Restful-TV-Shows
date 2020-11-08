@@ -21,10 +21,9 @@ def showNew(request):
 # Add
 def add(request):
     Show.objects.create(title=request.POST['title'],network=request.POST['network'],release=request.POST['date'],desc=request.POST['desc'])
-    context = {
-        'show': Show.objects.last()
-    }
-    return render(request, 'showShow.html', context)
+    num = Show.objects.last().id
+    num = str(num)
+    return redirect('/shows/'+num)
 
 
 # Edit Shows
@@ -48,10 +47,8 @@ def update(request, num):
     c.release=request.POST['date']
     c.desc=request.POST['desc']
     c.save()
-    context = {
-        'show': Show.objects.get(id=num)
-    }
-    return render(request, 'showShow.html', context)
+    num = str(num)
+    return redirect('/shows/'+num)
 
 # Show Shows
 def showShow(request, num):
