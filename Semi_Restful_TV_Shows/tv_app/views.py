@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from .models import Show
+from django.contrib import messages
 
 # Create your views here.
 
@@ -20,6 +21,12 @@ def showNew(request):
 
 # Add
 def add(request):
+    print(
+        request.POST['title'],
+        request.POST['network'],
+        request.POST['date'],
+        request.POST['desc'],
+    )
     Show.objects.create(title=request.POST['title'],network=request.POST['network'],release=request.POST['date'],desc=request.POST['desc'])
     num = Show.objects.last().id
     num = str(num)
@@ -35,19 +42,18 @@ def showEdit(request, num):
 
 # Update
 def update(request, num):
-    print(
-        request.POST['title'],
-        request.POST['network'],
-        request.POST['date'],
-        request.POST['desc'],
-    )
-    c = Show.objects.get(id=num)
-    c.title=request.POST['title']
-    c.network=request.POST['network']
-    c.release=request.POST['date']
-    c.desc=request.POST['desc']
-    c.save()
-    num = str(num)
+    errors = Show.objects.validate(request.POST)
+    if len(errors) > 0:
+        for key, val in errors:
+            messages.error(request, val)
+    else:
+        c = Show.objects.get(id=num)
+        c.title=request.POST['title']
+        c.network=request.POST['network']
+        c.release=request.POST['date']
+        c.desc=request.POST['desc']
+        c.save()
+        num = str(num)
     return redirect('/shows/'+num)
 
 # Show Shows
