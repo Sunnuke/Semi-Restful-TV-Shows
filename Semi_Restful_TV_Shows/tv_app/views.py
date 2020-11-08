@@ -65,3 +65,4 @@ def showDelete(request, num):
     c = Show.objects.get(id=num)
     c.delete()
     return redirect('/shows')
+    
