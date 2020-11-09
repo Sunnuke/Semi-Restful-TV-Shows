@@ -7,7 +7,6 @@ class ShowManager(models.Manager):
     # EDIT
     def validate(self, postData):
         errors = {}
-        # today = strftime("%Y-%m-%d", localtime())
         today = datetime.now()
         user = datetime.strptime(postData['date'], "%Y-%m-%d")
         print(today, user)
@@ -28,31 +27,6 @@ class ShowManager(models.Manager):
                 errors['desc'] = "Show description should be at least 10 characters"
                 print('description error')
         return errors
-
-    # NEW    (Not Fully Functional[new_date validation])
-    def validMake(self, Box):
-        errorM = {}
-        # today = strftime("%Y-%m-%d", localtime())
-        # today = datetime.now()
-        # user = datetime.strptime(Box['new_date'], "%Y-%m-%d")
-        # print('Today:',today, 'User', user)
-        if len(Box['title']) < 2:
-            errorM['title'] = "Show tile should be at least 2 characters"
-            print('title error')
-        if len(Box['network']) < 3:
-            errorM['network'] = "Show network should be at least 3 characters"
-            print('network error')
-        # if user.date() >= today.date():
-        #     print('date error')
-        #     if user.date() == today.date():
-        #         errorM['new_date'] = "The show's release date can't be Today"
-        #     elif user.date() > today.date():
-        #         errorM['new_date'] = "The show's release date can't be the Future"
-        if Box['desc']:
-            if len(Box['desc']) < 10:
-                errorM['desc'] = "Show description should be at least 10 characters"
-                print('description error')
-        return errorM
 
 # Database Table for Shows
 class Show(models.Model):

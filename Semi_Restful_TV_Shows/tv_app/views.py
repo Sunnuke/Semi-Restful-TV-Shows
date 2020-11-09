@@ -21,38 +21,30 @@ def showNew(request):
 
 # Add
 def add(request):
-    Box = request.POST
-    print(Box)
-    Show.objects.create(
-        title=request.POST['title'],
-        network=request.POST['network'],
-        release=request.POST['new_date'],
-        desc=request.POST['desc']
+    print(
+        request.POST['title'],
+        request.POST['network'],
+        request.POST['date'],
+        request.POST['desc'],
     )
-    num = Show.objects.last().id
-    num = str(num)
+    errors = Show.objects.validate(request.POST)
+    if len(errors) > 0:
+        print('There are', len(errors), 'ERRORS!!!')
+        for key, val in errors.items():
+            print(key, val)
+            messages.error(request, val)
+        return redirect('/shows/new')
+    else:
+        print('No errors')
+        Show.objects.create(
+            title=request.POST['title'],
+            network=request.POST['network'],
+            release=request.POST['date'],
+            desc=request.POST['desc']
+        )
+        num = Show.objects.last().id
+        num = str(num)
     return redirect('/shows/'+num)
-    # print(request.POST)
-    # errorM = Show.objects.validMake(request.POST)
-    # if len(errorM) == 0:
-    #     print('No errors')
-    #     print(request.POST['title'],request.POST['network'],request.POST['new_date'],request.POST['desc'],)
-    #     # Show.objects.create(
-    #     #     title=request.POST['title'],
-    #     #     network=request.POST['network'],
-    #     #     release=request.POST['new_date'],
-    #     #     desc=request.POST['desc']
-    #     # )
-    #     # num = Show.objects.last().id
-    #     # num = str(num)
-    #     return redirect('/shows/9')
-    # else:
-    #     print(request.POST['title'],request.POST['network'],request.POST['new_date'],request.POST['desc'],)
-    #     print('There are', len(errorM), 'ERRORS!!!')
-    #     for key, val in errorM.items():
-    #         print(key, val)
-    #         messages.error(request, val)
-    #     return redirect('/shows/new/add')
 
 
 # Edit Shows
