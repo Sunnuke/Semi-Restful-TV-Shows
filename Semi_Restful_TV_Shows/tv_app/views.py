@@ -20,32 +20,39 @@ def showNew(request):
     return render(request, 'showNew.html')
 
 # Add
-def create(request):
-    print(request.POST)
-    errorM = Show.objects.validMake(request.POST)
-    print(
-        request.POST['title'],
-        request.POST['network'],
-        request.POST['new_date'],
-        request.POST['desc'],
+def add(request):
+    Box = request.POST
+    print(Box)
+    Show.objects.create(
+        title=request.POST['title'],
+        network=request.POST['network'],
+        release=request.POST['new_date'],
+        desc=request.POST['desc']
     )
-    if len(errorM) > 0:
-        print('There are', len(errorM), 'ERRORS!!!')
-        for key, val in errorM.items():
-            print(key, val)
-            messages.error(request, val)
-        return redirect('/shows/new/add')
-    else:
-        print('No errors')
-        Show.objects.create(
-            title=request.POST['title'],
-            network=request.POST['network'],
-            release=request.POST['new_date'],
-            desc=request.POST['desc']
-        )
-        num = Show.objects.last().id
-        num = str(num)
+    num = Show.objects.last().id
+    num = str(num)
     return redirect('/shows/'+num)
+    # print(request.POST)
+    # errorM = Show.objects.validMake(request.POST)
+    # if len(errorM) == 0:
+    #     print('No errors')
+    #     print(request.POST['title'],request.POST['network'],request.POST['new_date'],request.POST['desc'],)
+    #     # Show.objects.create(
+    #     #     title=request.POST['title'],
+    #     #     network=request.POST['network'],
+    #     #     release=request.POST['new_date'],
+    #     #     desc=request.POST['desc']
+    #     # )
+    #     # num = Show.objects.last().id
+    #     # num = str(num)
+    #     return redirect('/shows/9')
+    # else:
+    #     print(request.POST['title'],request.POST['network'],request.POST['new_date'],request.POST['desc'],)
+    #     print('There are', len(errorM), 'ERRORS!!!')
+    #     for key, val in errorM.items():
+    #         print(key, val)
+    #         messages.error(request, val)
+    #     return redirect('/shows/new/add')
 
 
 # Edit Shows
