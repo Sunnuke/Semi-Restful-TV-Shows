@@ -20,16 +20,31 @@ def showNew(request):
     return render(request, 'showNew.html')
 
 # Add
-def add(request):
+def create(request):
+    print(request.POST)
+    errorM = Show.objects.validMake(request.POST)
     print(
         request.POST['title'],
         request.POST['network'],
-        request.POST['date'],
+        request.POST['new_date'],
         request.POST['desc'],
     )
-    Show.objects.create(title=request.POST['title'],network=request.POST['network'],release=request.POST['date'],desc=request.POST['desc'])
-    num = Show.objects.last().id
-    num = str(num)
+    if len(errorM) > 0:
+        print('There are', len(errorM), 'ERRORS!!!')
+        for key, val in errorM.items():
+            print(key, val)
+            messages.error(request, val)
+        return redirect('/shows/new/add')
+    else:
+        print('No errors')
+        Show.objects.create(
+            title=request.POST['title'],
+            network=request.POST['network'],
+            release=request.POST['new_date'],
+            desc=request.POST['desc']
+        )
+        num = Show.objects.last().id
+        num = str(num)
     return redirect('/shows/'+num)
 
 
@@ -42,11 +57,22 @@ def showEdit(request, num):
 
 # Update
 def update(request, num):
+    print(
+        request.POST['title'],
+        request.POST['network'],
+        request.POST['date'],
+        request.POST['desc'],
+    )
     errors = Show.objects.validate(request.POST)
+    reNum = str(num)
     if len(errors) > 0:
-        for key, val in errors:
+        print('There are', len(errors), 'ERRORS!!!')
+        for key, val in errors.items():
+            print(key, val)
             messages.error(request, val)
+        return redirect('/shows/'+reNum+'/edit')
     else:
+        print('No errors')
         c = Show.objects.get(id=num)
         c.title=request.POST['title']
         c.network=request.POST['network']

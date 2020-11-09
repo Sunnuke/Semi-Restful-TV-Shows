@@ -13,6 +13,13 @@
             <h1>Edit Show</h1>
             <a href="/shows">Go Back</a>
         </div>
+        {% if messages %}
+            <ul class="messages">
+                {% for error in messages %}
+                    <li {% if error.tags %} {{ error.tags }} {% endif %}> {{ error }} </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         <form action="/shows/{{ show.id }}/edit/update" method="POST">
             {% csrf_token %}
             <input class="titleInput" type="text" name="title" id="title" placeholder="Enter Title Here" required>
