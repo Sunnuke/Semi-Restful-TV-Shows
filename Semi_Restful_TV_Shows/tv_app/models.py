@@ -11,7 +11,7 @@ class ShowManager(models.Manager):
         user = datetime.strptime(postData['date'], "%Y-%m-%d")
         print(today, user)
         if Show.objects.filter(title=postData['title']):
-            errors['unique'] = "Show tile already exist!"
+            errors['unique'] = "Show title already exist!"
         if len(postData['title']) < 2:
             errors['title'] = "Show tile should be at least 2 characters!"
             print('title error')
